@@ -1,0 +1,31 @@
+services:
+  review-microservice:
+    image: review-microservice
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: review-microservice
+    ports:
+      - "8092:8092"
+    networks:
+      - app-network
+    depends_on:
+      - review-db
+    restart: always
+
+  review-db:
+    image: postgres:latest
+    container_name: review-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: review-db
+    ports:
+      - "5440:5440"
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    external: true
